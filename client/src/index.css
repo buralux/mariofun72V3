@@ -1,0 +1,388 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Base colors with gaming theme */
+  --background: 248 250 255; /* #F8FAFF - Light blue-white */
+  --foreground: 30 30 46; /* #1E1E2E - Dark text */
+  --muted: 243 244 246; /* #F3F4F6 - Light gray */
+  --muted-foreground: 107 114 128; /* #6B7280 - Medium gray */
+  --popover: 255 255 255; /* #FFFFFF - Pure white */
+  --popover-foreground: 30 30 46; /* #1E1E2E - Dark text */
+  --card: 255 255 255; /* #FFFFFF - White cards */
+  --card-foreground: 30 30 46; /* #1E1E2E - Dark text */
+  --border: 226 232 240; /* #E2E8F0 - Light border */
+  --input: 226 232 240; /* #E2E8F0 - Input border */
+  
+  /* Gaming-inspired primary colors */
+  --primary: 255 107 53; /* #FF6B35 - Orange primary */
+  --primary-foreground: 255 255 255; /* #FFFFFF - White text */
+  --secondary: 78 205 196; /* #4ECDC4 - Teal secondary */
+  --secondary-foreground: 255 255 255; /* #FFFFFF - White text */
+  
+  /* Accent colors for gaming elements */
+  --accent: 255 230 109; /* #FFE66D - Yellow accent */
+  --accent-foreground: 30 30 46; /* #1E1E2E - Dark text */
+  
+  /* Success and gaming achievements */
+  --success: 149 225 211; /* #95E1D3 - Mint green */
+  --success-foreground: 30 30 46; /* #1E1E2E - Dark text */
+  
+  /* Destructive states */
+  --destructive: 239 68 68; /* #EF4444 - Red */
+  --destructive-foreground: 255 255 255; /* #FFFFFF - White text */
+  
+  /* Ring and focus states */
+  --ring: 255 107 53; /* #FF6B35 - Orange ring */
+  --radius: 0.75rem; /* More rounded for kid-friendly design */
+  
+  /* Gaming theme specific colors */
+  --mario-red: 230 0 38; /* #E60026 */
+  --mario-blue: 0 102 204; /* #0066CC */
+  --fortnite-purple: 139 95 191; /* #8B5FBF */
+  --fortnite-blue: 0 212 255; /* #00D4FF */
+  --gamer-green: 0 255 136; /* #00FF88 */
+  --gamer-purple: 170 0 255; /* #AA00FF */
+  
+  /* VIP gold colors */
+  --vip-gold: 255 215 0; /* #FFD700 */
+  --vip-orange: 255 165 0; /* #FFA500 */
+}
+
+.dark {
+  /* Dark mode for gaming aesthetic */
+  --background: 15 23 42; /* #0F172A - Dark blue */
+  --foreground: 248 250 252; /* #F8FAFC - Light text */
+  --muted: 30 41 59; /* #1E293B - Dark gray */
+  --muted-foreground: 148 163 184; /* #94A3B8 - Light gray */
+  --popover: 15 23 42; /* #0F172A - Dark popover */
+  --popover-foreground: 248 250 252; /* #F8FAFC - Light text */
+  --card: 30 41 59; /* #1E293B - Dark card */
+  --card-foreground: 248 250 252; /* #F8FAFC - Light text */
+  --border: 51 65 85; /* #334155 - Dark border */
+  --input: 51 65 85; /* #334155 - Dark input border */
+  
+  --primary: 255 107 53; /* #FF6B35 - Keep orange primary */
+  --primary-foreground: 255 255 255; /* #FFFFFF - White text */
+  --secondary: 78 205 196; /* #4ECDC4 - Keep teal secondary */
+  --secondary-foreground: 255 255 255; /* #FFFFFF - White text */
+  
+  --accent: 255 230 109; /* #FFE66D - Keep yellow accent */
+  --accent-foreground: 30 30 46; /* #1E1E2E - Dark text */
+  
+  --destructive: 239 68 68; /* #EF4444 - Red */
+  --destructive-foreground: 255 255 255; /* #FFFFFF - White text */
+  
+  --ring: 255 107 53; /* #FF6B35 - Orange ring */
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply font-['Nunito'] antialiased bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  
+  /* Gaming-specific font styles */
+  .font-gaming {
+    font-family: 'Fredoka One', cursive;
+  }
+  
+  .font-retro {
+    font-family: 'Press Start 2P', monospace;
+  }
+  
+  /* Custom scrollbar for gaming aesthetic */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    @apply bg-muted;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-primary/80;
+  }
+}
+
+@layer components {
+  /* Gaming card component */
+  .gaming-card {
+    @apply bg-card/95 backdrop-blur-lg border border-border/50 shadow-xl;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* VIP badge styling */
+  .vip-badge {
+    background: linear-gradient(45deg, hsl(var(--vip-gold)), hsl(var(--vip-orange)));
+    box-shadow: 0 0 20px hsla(var(--vip-gold), 0.5);
+  }
+  
+  /* Theme backgrounds */
+  .theme-mario {
+    background: linear-gradient(135deg, hsl(var(--mario-red)), hsl(var(--mario-blue)));
+  }
+  
+  .theme-fortnite {
+    background: linear-gradient(135deg, hsl(var(--fortnite-purple)), hsl(var(--fortnite-blue)));
+  }
+  
+  .theme-gamer {
+    background: linear-gradient(135deg, hsl(var(--gamer-green)), hsl(var(--gamer-purple)));
+  }
+  
+  /* Interactive elements */
+  .card-hover {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .card-hover:hover {
+    @apply transform -translate-y-2 shadow-2xl;
+  }
+  
+  /* Gaming button styles */
+  .btn-gaming {
+    @apply font-bold px-6 py-3 rounded-full shadow-lg transform transition-all duration-300;
+  }
+  
+  .btn-gaming:hover {
+    @apply scale-105 shadow-xl;
+  }
+  
+  .btn-gaming:active {
+    @apply scale-95;
+  }
+  
+  /* Mood card animations */
+  .mood-card {
+    @apply transition-all duration-300 cursor-pointer;
+  }
+  
+  .mood-card:hover {
+    @apply transform scale-105 shadow-xl;
+  }
+  
+  .mood-card.active {
+    @apply ring-4 ring-primary shadow-2xl transform scale-105;
+  }
+  
+  /* Gaming grid patterns */
+  .gaming-pattern {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+    background-size: 20px 20px;
+  }
+  
+  /* Glowing text effect for headings */
+  .text-glow {
+    text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+  }
+  
+  /* Loading animations */
+  .pulse-gaming {
+    animation: pulse-gaming 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  @keyframes pulse-gaming {
+    0%, 100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: scale(1.05);
+    }
+  }
+  
+  /* Floating animation for gaming elements */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  /* Wiggle animation for interactive elements */
+  .animate-wiggle {
+    animation: wiggle 1s ease-in-out infinite;
+  }
+  
+  @keyframes wiggle {
+    0%, 100% {
+      transform: rotate(-3deg);
+    }
+    50% {
+      transform: rotate(3deg);
+    }
+  }
+  
+  /* Bounce slow for gaming elements */
+  .animate-bounce-slow {
+    animation: bounce-slow 2s infinite;
+  }
+  
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(-25%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateY(0);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+  
+  /* Gaming progress bars */
+  .progress-gaming {
+    @apply w-full bg-muted rounded-full h-3 overflow-hidden;
+    background: linear-gradient(90deg, hsl(var(--muted)) 0%, hsl(var(--muted)) 100%);
+  }
+  
+  .progress-gaming .progress-fill {
+    @apply h-full rounded-full transition-all duration-1000 ease-out;
+    background: linear-gradient(90deg, hsl(var(--primary)) 0%, hsl(var(--secondary)) 100%);
+  }
+  
+  /* YouTube integration styles */
+  .youtube-embed {
+    @apply relative w-full h-0 overflow-hidden rounded-lg;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+  
+  .youtube-embed iframe {
+    @apply absolute top-0 left-0 w-full h-full;
+  }
+  
+  /* Responsive text sizing for gaming headings */
+  .heading-responsive {
+    @apply text-2xl md:text-3xl lg:text-4xl xl:text-5xl;
+  }
+  
+  /* Gaming accessibility improvements */
+  .focus-gaming:focus {
+    @apply outline-none ring-4 ring-primary ring-opacity-50;
+  }
+  
+  /* Mobile-first responsive improvements */
+  @media (max-width: 640px) {
+    .gaming-card {
+      @apply mx-2;
+    }
+    
+    .card-hover:hover {
+      @apply transform-none shadow-lg;
+    }
+  }
+  
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .gaming-card {
+      @apply border-2 border-foreground;
+    }
+    
+    .btn-gaming {
+      @apply border-2 border-foreground;
+    }
+  }
+  
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .animate-float,
+    .animate-wiggle,
+    .animate-bounce-slow,
+    .pulse-gaming {
+      animation: none;
+    }
+    
+    .card-hover,
+    .mood-card {
+      transition: none;
+    }
+  }
+}
+
+@layer utilities {
+  /* Gaming utility classes */
+  .text-mario {
+    color: hsl(var(--mario-red));
+  }
+  
+  .text-fortnite {
+    color: hsl(var(--fortnite-purple));
+  }
+  
+  .text-gamer {
+    color: hsl(var(--gamer-green));
+  }
+  
+  .bg-mario {
+    background-color: hsl(var(--mario-red));
+  }
+  
+  .bg-fortnite {
+    background-color: hsl(var(--fortnite-purple));
+  }
+  
+  .bg-gamer {
+    background-color: hsl(var(--gamer-green));
+  }
+  
+  /* VIP styling utilities */
+  .text-vip {
+    background: linear-gradient(45deg, hsl(var(--vip-gold)), hsl(var(--vip-orange)));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  .border-vip {
+    border-image: linear-gradient(45deg, hsl(var(--vip-gold)), hsl(var(--vip-orange))) 1;
+  }
+  
+  /* Gaming gradient backgrounds */
+  .bg-gaming-primary {
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--secondary)));
+  }
+  
+  .bg-gaming-accent {
+    background: linear-gradient(135deg, hsl(var(--accent)), hsl(var(--success)));
+  }
+  
+  /* Text truncation with gaming styling */
+  .truncate-gaming {
+    @apply truncate;
+    max-width: calc(100% - 2rem);
+  }
+  
+  /* Gaming shadow utilities */
+  .shadow-gaming {
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+  
+  .shadow-gaming-lg {
+    box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.25), 0 8px 16px -4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Aspect ratio utilities for gaming content */
+  .aspect-gaming {
+    aspect-ratio: 16 / 9;
+  }
+  
+  .aspect-square-gaming {
+    aspect-ratio: 1 / 1;
+  }
+}

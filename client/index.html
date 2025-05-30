@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+    <title>MarioFun72 - L'univers gaming de Youssef | Chaîne YouTube Gaming</title>
+    <meta name="description" content="Rejoins l'univers gaming de Youssef ! Découvre ses vidéos YouTube, joue à des mini-jeux, participe aux tirages VIP et personnalise ton profil gamer. Site 100% français pour les jeunes gamers." />
+    <meta name="keywords" content="gaming, YouTube, Mario, Fortnite, jeux vidéo, enfants, quiz, mini-jeux, MarioFun72, Youssef" />
+    
+    <!-- Open Graph tags for social media -->
+    <meta property="og:title" content="MarioFun72 - L'univers gaming de Youssef" />
+    <meta property="og:description" content="Découvre l'univers gaming de Youssef avec des vidéos YouTube, mini-jeux et contenu VIP exclusif !" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://mariofun72.com" />
+    <meta property="og:image" content="/og-image.jpg" />
+    <meta property="og:locale" content="fr_FR" />
+    
+    <!-- Twitter Card tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="MarioFun72 - L'univers gaming de Youssef" />
+    <meta name="twitter:description" content="Découvre l'univers gaming de Youssef avec des vidéos YouTube, mini-jeux et contenu VIP exclusif !" />
+    <meta name="twitter:image" content="/og-image.jpg" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One:wght@400&family=Nunito:wght@300;400;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+    
+    <!-- Theme color for mobile browsers -->
+    <meta name="theme-color" content="#FF6B35" />
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- Prevent FOUC -->
+    <style>
+      body { 
+        opacity: 0; 
+        transition: opacity 0.3s ease-in-out; 
+      }
+      body.loaded { 
+        opacity: 1; 
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    
+    <!-- Prevent FOUC -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        document.body.classList.add('loaded');
+      });
+    </script>
+    
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script type="text/javascript" src="https://replit.com/public/js/replit-dev-banner.js"></script>
+  </body>
+</html>
