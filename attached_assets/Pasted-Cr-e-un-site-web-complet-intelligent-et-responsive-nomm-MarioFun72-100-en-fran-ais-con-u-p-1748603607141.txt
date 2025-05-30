@@ -1,0 +1,93 @@
+Crée un site web complet, intelligent et responsive nommé **MarioFun72**, 100 % en français, conçu pour un enfant gamer de 10 ans. Le site a pour objectif d’attirer des vues et des abonnés vers sa chaîne YouTube : https://youtube.com/@mariofun72_yt?feature=shared
+
+---
+
+🎯 Objectifs :
+- Offrir un univers fun, coloré et interactif adapté aux enfants (8–14 ans)
+- Présenter automatiquement ses vidéos YouTube via l’API officielle
+- Intégrer des humeurs dynamiques via des personnages de jeux vidéo
+- Inclure un système VIP avec tirage au sort (sur blockchain) et surprises
+- Proposer des mini-jeux, quizz et zones personnalisées
+- Interface gamifiée, ludique, avec une touche IA
+
+---
+
+🏠 Page d’accueil :
+- Hero section avec fond animé (choix entre 3 thèmes : [Mario 🎩], [Fortnite ⚔️], [Gamer 🎧])
+- Avatar animé de Youssef (style cartoon gamer)
+- Bouton "🎮 Regarde mes vidéos" menant vers la chaîne YouTube
+- Section "Mes dernières vidéos" : contenu intégré automatiquement via l’API YouTube
+- Bouton “Connexion YouTube” pour vérifier l’abonnement
+- Encadré "Humeur du jour" affichant une icône + animation :
+  - 😴 Kirby (fatigué) → Kirby flottant
+  - 😄 Mario (joyeux) → Mario saute avec étoiles
+  - 😡 Bowser (énervé) → Feu de Bowser animé
+  - 😎 Sonic (fier) → Sonic tourne et fait pouce
+  - 😱 Pac-Man (surpris) → Pac-Man tourne autour "?"
+
+---
+
+⭐ Espace VIP :
+- Accès uniquement après vérification d’abonnement YouTube
+- Badge animé : “👑 VIP Officiel”
+- Coffre mystère hebdomadaire (animation Lottie : coffre qui s’ouvre)
+- Surprises aléatoires : badge, mini-jeu, image collector, lien secret
+- Historique des récompenses reçues
+- Bouton "Participer au tirage au sort" (voir ci-dessous)
+
+---
+
+🎲 Tirage au sort transparent :
+- Participation hebdomadaire des VIP (sans wallet)
+- Gagnant tiré au sort de manière transparente
+- Résultat inscrit dans un smart contract sur la blockchain NEAR :
+  - Fonction : `logWinner(nom, date)`
+- Résultat visible publiquement (lien vers explorer)
+- Affichage du gagnant en bas de page VIP
+
+---
+
+🧠 Système IA :
+- L’IA analyse l’humeur de la journée et adapte le thème du site (humeur auto ou choisie)
+- L’IA suit les vues de la chaîne et affiche des messages personnalisés
+- Exemple : “Tu as regardé 3 vidéos cette semaine ? Clique ici pour une surprise !”
+
+---
+
+🕹️ Jeux et Quizz :
+- Mini-jeux simples : quiz, memory card, glisser-déposer
+- Score visible et partageable
+- Gagner des badges (affichés dans “Mes récompenses”)
+- Quizz dynamiques générés par IA selon thème choisi (Fortnite / Mario)
+
+---
+
+🔐 Authentification :
+- Connexion par compte YouTube
+- Vérification d’abonnement à la chaîne
+- Statut VIP débloqué uniquement si abonné
+- Chaque utilisateur a un profil enregistré (nom, humeur préférée, historique)
+
+---
+
+🎨 Design :
+- Palette colorée et joyeuse, adaptée aux enfants
+- Icônes : SVG de Flaticon / IconScout / Game-icons
+- Illustrations : Freepik, Vecteezy (style cartoon gaming)
+- Animations : LottieFiles intégrées pour :
+  - Kirby flottant
+  - Mario sautant avec étoiles
+  - Bowser cracheur de feu
+  - Sonic rotation et pouce levé
+  - Pac-Man tournoyant
+- Responsive mobile et tablette
+- Fond de page personnalisable selon humeur ou thème choisi
+
+---
+
+🧰 Tech suggérée :
+- Frontend : Next.js + Tailwind CSS
+- Backend : Supabase (ou Firebase)
+- Intégration API YouTube (vidéos + abonnés)
+- Blockchain NEAR : pour publier tirage des VIPs
+- OpenAI (ou LocalAI) : pour personnaliser l’expérience, messages, et quizz
