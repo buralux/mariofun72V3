@@ -2,6 +2,7 @@
   "buildCommand": "npm run build:client",
   "outputDirectory": "client/dist",
   "installCommand": "npm install",
+  "nodeVersion": "18.x",
   "functions": {
     "api/**/*.ts": {
       "runtime": "@vercel/node@3.0.0"
