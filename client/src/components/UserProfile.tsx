@@ -5,6 +5,8 @@ import { useAuth } from '@/hooks/useAuth';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { motion } from 'framer-motion';
+import lottieMariofunAIGif from './mariofun_ai_gif_lottie.json';
+import Player from 'lottie-react';
 
 export default function UserProfile() {
   const { user, updateUser } = useAuth();
@@ -207,11 +209,16 @@ export default function UserProfile() {
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">
                       <motion.div 
-                        className="w-12 h-12 bg-indigo-500 rounded-full flex items-center justify-center"
+                        className="w-16 h-16 bg-indigo-500 rounded-full flex items-center justify-center"
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ duration: 3, repeat: Infinity }}
                       >
-                        <span className="text-white text-xl">🤖</span>
+                        <Player 
+                          autoplay 
+                          loop 
+                          animationData={lottieMariofunAIGif} 
+                          style={{ width: 56, height: 56, background: 'transparent' }} 
+                        />
                       </motion.div>
                       <div className="flex-1">
                         <h4 className="font-bold text-indigo-900 mb-2">Message IA personnalisé</h4>

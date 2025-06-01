@@ -3,6 +3,41 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { MoodCharacter } from '@/types';
 import { useAuth } from '@/hooks/useAuth';
+import Player from 'lottie-react';
+// @ts-ignore
+import lottieMoodHappy from './lottie-mood-happy.json';
+// @ts-ignore
+import lottieMoodKirby from './lottie-mood-kirby.json';
+// @ts-ignore
+import lottieBowserGif from './bowser_gif_lottie.json';
+// @ts-ignore
+import lottieSonicGif from './sonic_gif_lottie.json';
+// @ts-ignore
+import lottieMoodPeach from './lottie-mood-peach.json';
+// @ts-ignore
+import lottieMoodMario from './lottie-mood-mario.json';
+import lottieMarioGif from './mario_gif_lottie.json';
+import lottieMariofunAIGif from './mariofun_ai_gif_lottie.json';
+import { useState } from 'react';
+import KirbyPixelIcon from './KirbyPixelIcon';
+import BowserPixelIcon from './BowserPixelIcon';
+import SonicPixelIcon from './SonicPixelIcon';
+import PeachPixelIcon from './PeachPixelIcon';
+import PacmanPixelIcon from './PacmanPixelIcon';
+import lottieKirbyGif from './kirby_gif_lottie.json';
+import lottiePeachGif from './peach_gif_lottie.json';
+import lottiePacmanGif from './pacman_gif_lottie.json';
+// @ts-ignore
+import lottiePeelyHappy from './peely_happy_lottie.json';
+// @ts-ignore
+import lottieKratosAngry from './kratos_angry_lottie_embedded.json';
+// @ts-ignore
+import llamaExcitedLottie from './llama_excited_lottie_embedded.json';
+import PeelyPixelIcon from './PeelyPixelIcon';
+// @ts-ignore
+import lottieSynthStarConfident from './synthstar_confident_lottie_embedded.json';
+// @ts-ignore
+import fishstickSadLottie from './fishstick_sad_lottie_embedded.json';
 
 interface MoodSystemProps {
   moods: MoodCharacter[];
@@ -10,7 +45,40 @@ interface MoodSystemProps {
   onMoodSelect: (mood: MoodCharacter) => void;
 }
 
-export default function MoodSystem({ moods, selectedMood, onMoodSelect }: MoodSystemProps) {
+function SafeLottie({ animationData, fallback, ...props }: { animationData: any; fallback?: React.ReactNode; style?: React.CSSProperties }) {
+  const [error, setError] = useState(false);
+  // Vérification stricte du JSON Lottie
+  const isValidLottie =
+    animationData &&
+    typeof animationData === 'object' &&
+    Array.isArray(animationData.layers) &&
+    animationData.layers.length > 0;
+
+  if (!isValidLottie || error) {
+    // Fallback animé Pac-Man ou custom
+    return (
+      <div className="flex flex-col items-center justify-center" style={props.style}>
+        {fallback ? (
+          fallback
+        ) : (
+          <div className="text-5xl animate-spin" style={{ display: 'inline-block' }}>🟡</div>
+        )}
+        <div className="text-xs text-yellow-500 mt-1">Animation non disponible</div>
+      </div>
+    );
+  }
+  return (
+    <Player
+      autoplay
+      loop
+      animationData={animationData}
+      style={props.style}
+      onError={() => setError(true)}
+    />
+  );
+}
+
+export default function MoodSystem({ moods, selectedMood, onMoodSelect, currentTheme }: MoodSystemProps & { currentTheme: { id: string } }) {
   const { user, updateUser } = useAuth();
 
   const handleMoodSelect = async (mood: MoodCharacter) => {
@@ -23,6 +91,46 @@ export default function MoodSystem({ moods, selectedMood, onMoodSelect }: MoodSy
       }
     }
   };
+
+  // Mapping des icônes/animations selon le thème
+  function getMoodIcon(moodId: string) {
+    if (currentTheme.id === 'mario') {
+      switch (moodId) {
+        case 'mario':
+          return <SafeLottie animationData={lottieMarioGif} style={{ width: 160, height: 160 }} />;
+        case 'kirby':
+          return <SafeLottie animationData={lottieKirbyGif} style={{ width: 160, height: 160 }} fallback={<KirbyPixelIcon style={{ width: 160, height: 160 }} />} />;
+        case 'bowser':
+          return <SafeLottie animationData={lottieBowserGif} style={{ width: 160, height: 160 }} fallback={<BowserPixelIcon style={{ width: 160, height: 160 }} />} />;
+        case 'sonic':
+          return <SafeLottie animationData={lottieSonicGif} style={{ width: 160, height: 160 }} fallback={<SonicPixelIcon style={{ width: 160, height: 160 }} />} />;
+        case 'peach':
+          return <SafeLottie animationData={lottiePeachGif} style={{ width: 160, height: 160 }} fallback={<PeachPixelIcon style={{ width: 160, height: 160 }} />} />;
+        default:
+          return <SafeLottie animationData={lottiePacmanGif} style={{ width: 160, height: 160 }} fallback={<PacmanPixelIcon style={{ width: 160, height: 160 }} />} />;
+      }
+    }
+    if (currentTheme.id === 'fortnite') {
+      switch (moodId) {
+        case 'heureux':
+          return <SafeLottie animationData={lottiePeelyHappy} style={{ width: 160, height: 160 }} fallback={<PeelyPixelIcon style={{ width: 160, height: 160 }} />} />;
+        case 'enerve':
+          return <div style={{ borderRadius: '50%', overflow: 'hidden', width: 160, height: 160, background: '#fff' }}>
+            <SafeLottie animationData={lottieKratosAngry} style={{ width: 160, height: 160 }} fallback={<img src="https://static.wikia.nocookie.net/fortnite_gamepedia/images/2/2e/Kratos_-_Outfit_-_Fortnite.png" alt="Kratos" style={{ width: 160, height: 160, borderRadius: '50%' }} />} />
+          </div>;
+        case 'confiant':
+          return <SafeLottie animationData={lottieSynthStarConfident} style={{ width: 160, height: 160 }} fallback={<img src="https://static.wikia.nocookie.net/fortnite_gamepedia/images/2/2e/Synth_Star_-_Outfit_-_Fortnite.png" alt="Synth Star" style={{ width: 160, height: 160, borderRadius: '50%' }} />} />;
+        case 'triste':
+          return <SafeLottie animationData={fishstickSadLottie} style={{ width: 160, height: 160 }} fallback={<img src="https://static.wikia.nocookie.net/fortnite_gamepedia/images/7/7e/Fishstick_-_Outfit_-_Fortnite.png" alt="Fishstick" style={{ width: 160, height: 160, borderRadius: '50%' }} />} />;
+        case 'excite':
+          return <SafeLottie animationData={llamaExcitedLottie} style={{ width: 160, height: 160 }} fallback={<img src="https://static.wikia.nocookie.net/fortnite_gamepedia/images/7/7e/Loot_Llama_-_Outfit_-_Fortnite.png" alt="Lama Fortnite" style={{ width: 160, height: 160, borderRadius: '50%' }} />} />;
+        default:
+          return <span className="text-6xl">🎮</span>;
+      }
+    }
+    // Autres thèmes : fallback générique
+    return <span className="text-6xl">🎮</span>;
+  }
 
   return (
     <section className="py-16 bg-white">
@@ -52,21 +160,10 @@ export default function MoodSystem({ moods, selectedMood, onMoodSelect }: MoodSy
                 onClick={() => handleMoodSelect(mood)}
               >
                 <CardContent className="p-6 text-center text-white">
-                  <motion.div 
-                    className="text-6xl mb-4"
-                    animate={{ 
-                      rotate: mood.animation === 'spin' ? 360 : 0,
-                      y: mood.animation === 'bounce' ? [-10, 10, -10] : 0,
-                      scale: mood.animation === 'pulse' ? [1, 1.1, 1] : 1
-                    }}
-                    transition={{ 
-                      duration: mood.animation === 'spin' ? 2 : 3, 
-                      repeat: Infinity,
-                      ease: mood.animation === 'spin' ? 'linear' : 'easeInOut'
-                    }}
-                  >
-                    {mood.emoji}
-                  </motion.div>
+                  {/* Animation Lottie pour chaque humeur */}
+                  <div className="flex justify-center mb-4">
+                    {getMoodIcon(mood.id)}
+                  </div>
                   <h4 className="font-bold text-xl mb-2">{mood.name}</h4>
                   <p className="text-white/90 text-sm mb-4">{mood.description}</p>
                   

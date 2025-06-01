@@ -6,7 +6,7 @@ import { z } from "zod";
 
 // YouTube API configuration
 const YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY || process.env.VITE_YOUTUBE_API_KEY || "";
-const YOUTUBE_CHANNEL_ID = "UCMarioFun72"; // This would be the actual channel ID
+const YOUTUBE_CHANNEL_ID = "UCzLBWyAYcp_ynG85K3NxXtQ"; // ID réel de la chaîne MarioFun72
 
 export async function registerRoutes(app: Express): Promise<Server> {
   
@@ -96,6 +96,33 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ isSubscribed: Math.random() > 0.5 });
     } catch (error) {
       res.status(500).json({ message: "Erreur de vérification", error });
+    }
+  });
+
+  // YouTube channel stats route
+  app.get("/api/youtube/stats", async (req, res) => {
+    try {
+      if (!YOUTUBE_API_KEY) {
+        return res.status(503).json({ message: "API YouTube non configurée" });
+      }
+      const response = await fetch(
+        `https://www.googleapis.com/youtube/v3/channels?part=statistics&id=${YOUTUBE_CHANNEL_ID}&key=${YOUTUBE_API_KEY}`
+      );
+      if (!response.ok) {
+        throw new Error("Erreur API YouTube stats");
+      }
+      const data = await response.json();
+      const stats = data.items && data.items[0] && data.items[0].statistics;
+      if (!stats) {
+        return res.status(404).json({ message: "Statistiques non trouvées" });
+      }
+      res.json({
+        subscribers: stats.subscriberCount,
+        views: stats.viewCount,
+        videos: stats.videoCount
+      });
+    } catch (error) {
+      res.status(500).json({ message: "Impossible de récupérer les statistiques", error });
     }
   });
 

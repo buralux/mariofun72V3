@@ -7,6 +7,11 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { apiRequest } from '@/lib/queryClient';
 import { motion } from 'framer-motion';
 import { VipReward, LotteryWinner } from '@/types';
+import Player from 'lottie-react';
+// @ts-ignore
+import lottieChest from './lottie-mystery-chest.json';
+import ChestPixelIcon from './ChestPixelIcon';
+import SafeLottie from './SafeLottie';
 
 export default function VIPSection() {
   const { user } = useAuth();
@@ -16,7 +21,7 @@ export default function VIPSection() {
   // Fetch user rewards
   const { data: rewardsData } = useQuery<{ rewards: VipReward[] }>({
     queryKey: [`/api/vip/rewards/${user?.id}`],
-    enabled: !!user?.id && user.isSubscribed,
+    enabled: Boolean(user?.id && user.isSubscribed),
   });
 
   // Fetch latest lottery winner
@@ -109,6 +114,19 @@ export default function VIPSection() {
               animate={{ scale: [1, 1.05, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             >
+              <Player
+                autoplay
+                loop
+                animationData={lottieChest}
+                style={{ width: 48, height: 48, marginRight: 12 }}
+              />
+              👑 VIP Officiel
+            </motion.div>
+            <motion.div 
+              className="inline-flex items-center bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-6 py-3 rounded-full font-bold text-xl mb-4"
+              animate={{ scale: [1, 1.05, 1] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
               <Crown className="mr-2 animate-pulse" />
               👑 Espace VIP Officiel
             </motion.div>
@@ -122,18 +140,14 @@ export default function VIPSection() {
             {/* Mystery Chest */}
             <Card className="bg-gradient-to-br from-purple-400 to-purple-600 text-white text-center hover:scale-105 transition-all duration-300">
               <CardContent className="p-6">
-                <motion.div 
-                  className="text-6xl mb-3"
-                  animate={isChestOpening ? { 
-                    rotateY: [0, 180, 360],
-                    scale: [1, 1.2, 1]
-                  } : { y: [0, -5, 0] }}
-                  transition={{ 
-                    duration: isChestOpening ? 2 : 3, 
-                    repeat: isChestOpening ? 1 : Infinity 
-                  }}
-                >
-                  🎁
+                <motion.div className="mb-3 flex justify-center">
+                  <div style={{ width: 120, height: 120 }}>
+                    <SafeLottie
+                      animationData={lottieChest}
+                      fallback={<ChestPixelIcon style={{ width: 120, height: 120 }} />}
+                      style={{ width: 120, height: 120 }}
+                    />
+                  </div>
                 </motion.div>
                 <h4 className="font-bold text-lg mb-2">Coffre Mystère</h4>
                 <p className="text-purple-100 text-sm mb-4">Récompense hebdomadaire surprise</p>
@@ -156,10 +170,20 @@ export default function VIPSection() {
                   {rewardsData?.rewards.length || 0} badges collectés
                 </p>
                 <div className="space-y-2 max-h-24 overflow-y-auto">
-                  {rewardsData?.rewards.slice(0, 3).map((reward, index) => (
-                    <div key={reward.id} className="text-xs bg-white/20 rounded px-2 py-1">
-                      {reward.rewardType === 'badge' && '🎖️'} 
-                      {reward.rewardData?.name || 'Récompense'}
+                  {(rewardsData?.rewards ?? []).slice(0, 3).map((reward: any, index: number) => (
+                    <div key={reward.id} className="flex items-center gap-2 text-xs bg-white/20 rounded px-2 py-1">
+                      {reward.rewardType === 'badge' && (
+                        <span className="text-yellow-300 animate-bounce text-lg">🎖️</span>
+                      )}
+                      {reward.rewardType === 'image' && reward.rewardData?.url && (
+                        <img src={reward.rewardData.url} alt={reward.rewardData.name} className="w-6 h-6 rounded-full border-2 border-white" />
+                      )}
+                      {reward.rewardType === 'secret_link' && reward.rewardData?.url && (
+                        <a href={reward.rewardData.url} target="_blank" rel="noopener noreferrer" className="underline text-blue-200 hover:text-blue-400">
+                          🔗 Lien secret
+                        </a>
+                      )}
+                      <span>{reward.rewardData?.name || 'Récompense'}</span>
                     </div>
                   ))}
                 </div>
@@ -198,17 +222,6 @@ export default function VIPSection() {
                 {winnerData.winner.wonAt && new Date(winnerData.winner.wonAt).toLocaleDateString('fr-FR')}
               </p>
               <p className="text-sm text-gray-500 mb-2">{winnerData.winner.prizeDescription}</p>
-              {winnerData.winner.blockchainTxHash && (
-                <a 
-                  href={`https://explorer.near.org/transactions/${winnerData.winner.blockchainTxHash}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-indigo-600 hover:text-indigo-800 text-sm inline-flex items-center"
-                >
-                  <ExternalLink className="w-4 h-4 mr-1" />
-                  Voir sur la blockchain
-                </a>
-              )}
             </div>
           )}
 

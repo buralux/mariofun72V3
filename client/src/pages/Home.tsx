@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useAuth } from '@/hooks/useAuth';
 import { useSubscriptionCheck } from '@/hooks/useYouTube';
+import { useYouTubeStats } from '@/hooks/useYouTubeStats';
 import Navigation from '@/components/Navigation';
 import Hero from '@/components/Hero';
 import MoodSystem from '@/components/MoodSystem';
@@ -13,10 +14,14 @@ import VIPSection from '@/components/VIPSection';
 import GamesSection from '@/components/GamesSection';
 import UserProfile from '@/components/UserProfile';
 import { Theme, MoodCharacter } from '@/types';
+import { GoogleLogin } from '@react-oauth/google';
+import * as jwt_decode from 'jwt-decode';
+import logoMarioFun72 from '../components/logo-mariofun72.png';
 
 export default function Home() {
   const { user, login } = useAuth();
   const subscriptionCheck = useSubscriptionCheck();
+  const { data: ytStats, isLoading: statsLoading, error: statsError } = useYouTubeStats();
   const [showLoginDialog, setShowLoginDialog] = useState(false);
   const [username, setUsername] = useState('');
   const [currentTheme, setCurrentTheme] = useState<Theme>({
@@ -103,21 +108,65 @@ export default function Home() {
       description: 'Surpris par les fantômes !',
       animation: 'surprise',
       color: 'linear-gradient(135deg, #facc15, #eab308)'
+    },
+    {
+      id: 'peach',
+      name: 'Peach',
+      emoji: '👑',
+      description: 'Princesse et prête à briller !',
+      animation: 'pulse',
+      color: 'linear-gradient(135deg, #f9a8d4, #f472b6)'
     }
   ];
 
-  const [currentMood, setCurrentMood] = useState<MoodCharacter>(
-    moods.find(mood => mood.id === user?.preferredMood) || moods[0]
-  );
-
-  useEffect(() => {
-    if (user?.preferredMood) {
-      const userMood = moods.find(mood => mood.id === user.preferredMood);
-      if (userMood) {
-        setCurrentMood(userMood);
-      }
+  // Mapping des moods Fortnite pour le Hero
+  const fortniteMoods: MoodCharacter[] = [
+    {
+      id: 'heureux',
+      name: 'Peely',
+      emoji: '😊',
+      description: 'Peely qui danse avec un fond lumineux 🍌✨',
+      animation: 'bounce',
+      color: 'linear-gradient(135deg, #ffe066, #fffbe6)'
+    },
+    {
+      id: 'enerve',
+      name: 'Kratos',
+      emoji: '😠',
+      description: 'Kratos avec un fond rouge et des éclairs 🔥⚡',
+      animation: 'fire',
+      color: 'linear-gradient(135deg, #ff4d4f, #a8071a)'
+    },
+    {
+      id: 'confiant',
+      name: 'Midas',
+      emoji: '😎',
+      description: 'Midas avec son costume doré, clin d’œil 🕶️💰',
+      animation: 'pulse',
+      color: 'linear-gradient(135deg, #ffd700, #fffbe6)'
+    },
+    {
+      id: 'triste',
+      name: 'Fishstick',
+      emoji: '😢',
+      description: 'Fishstick assis sous la pluie avec animation 💧🐟',
+      animation: 'float',
+      color: 'linear-gradient(135deg, #40a9ff, #bae7ff)'
+    },
+    {
+      id: 'excite',
+      name: 'Meowscles',
+      emoji: '🤪',
+      description: 'Meowscles qui lève des haltères en dansant 🐱🏋️',
+      animation: 'spin',
+      color: 'linear-gradient(135deg, #ff85c0, #fff0f6)'
     }
-  }, [user?.preferredMood]);
+  ];
+
+  // Sélection de l’humeur du jour selon le thème
+  const [currentMood, setCurrentMood] = useState<MoodCharacter>(
+    (currentTheme.id === 'fortnite' ? fortniteMoods : moods).find(mood => mood.id === user?.preferredMood) || (currentTheme.id === 'fortnite' ? fortniteMoods[0] : moods[0])
+  );
 
   const handleConnectYouTube = () => {
     if (!user) {
@@ -127,7 +176,7 @@ export default function Home() {
       subscriptionCheck.mutate('UC_CHANNEL_ID', {
         onSuccess: (data) => {
           if (data.isSubscribed) {
-            login(user.username, user.youtubeId, true);
+            login(user?.username || '', user?.youtubeId || undefined, true);
           }
         }
       });
@@ -148,6 +197,30 @@ export default function Home() {
       setUsername('');
     } catch (error) {
       console.error('Erreur de connexion:', error);
+    }
+  };
+
+  const handleGoogleLogin = async (credentialResponse: any) => {
+    try {
+      if (!credentialResponse.credential) return;
+      // Décoder le token JWT Google pour obtenir les infos utilisateur
+      const decoded: any = jwt_decode.jwtDecode(credentialResponse.credential);
+      const username = decoded.name || decoded.given_name || 'Gamer';
+      const youtubeId = decoded.sub; // L'ID Google unique
+      // Appel login (statut abonné à false par défaut, à vérifier ensuite)
+      await login(username, youtubeId, false);
+      setShowLoginDialog(false);
+      setUsername('');
+      // Vérification abonnement à la chaîne MarioFun72
+      subscriptionCheck.mutate('UCQw5p1p7iFQvQnQnQnQnQnQ', {
+        onSuccess: (data) => {
+          if (data.isSubscribed) {
+            login(username, youtubeId, true);
+          }
+        }
+      });
+    } catch (error) {
+      console.error('Erreur Google Login:', error);
     }
   };
 
@@ -174,12 +247,58 @@ export default function Home() {
       />
 
       <MoodSystem 
-        moods={moods}
+        moods={currentTheme.id === 'fortnite' ? fortniteMoods : moods}
         selectedMood={currentMood}
         onMoodSelect={handleMoodSelect}
+        currentTheme={currentTheme}
       />
 
       <YouTubeVideos />
+
+      {/* Affichage des statistiques YouTube réelles */}
+      <div className="max-w-2xl mx-auto mt-8 mb-12 p-6 bg-white/90 rounded-xl shadow text-center">
+        <div className="flex flex-col items-center mb-2">
+          <div className="w-20 h-20 rounded-full overflow-hidden shadow-lg border-4 border-red-500 bg-white animate-bounce mb-2">
+            <img src="https://yt3.ggpht.com/ysz_h-WBrBVnmCa8dBlT25TjSeS_buldxkgFVm9OB2uke6U962PG7nU-kVUCyysQ9mJYxYRpdw=s600-c-k-c0x00ffffff-no-rj-rp-mo" alt="Logo MarioFun72" className="w-full h-full object-cover" />
+          </div>
+          <h3 className="text-2xl font-bold mb-4 text-gray-800" style={{ fontFamily: 'Fredoka One' }}>
+            Statistiques de la chaîne YouTube
+          </h3>
+        </div>
+        {statsLoading ? (
+          <div className="flex justify-center space-x-8 animate-pulse">
+            <div>
+              <div className="h-6 w-20 bg-gray-200 rounded mb-2 mx-auto" />
+              <div className="h-4 w-16 bg-gray-100 rounded mx-auto" />
+            </div>
+            <div>
+              <div className="h-6 w-20 bg-gray-200 rounded mb-2 mx-auto" />
+              <div className="h-4 w-16 bg-gray-100 rounded mx-auto" />
+            </div>
+            <div>
+              <div className="h-6 w-20 bg-gray-200 rounded mb-2 mx-auto" />
+              <div className="h-4 w-16 bg-gray-100 rounded mx-auto" />
+            </div>
+          </div>
+        ) : statsError ? (
+          <div className="text-red-500">Impossible de charger les statistiques YouTube.</div>
+        ) : ytStats ? (
+          <div className="flex justify-center space-x-8 text-lg">
+            <div>
+              <div className="font-bold text-2xl text-red-600">{Number(ytStats.subscribers).toLocaleString('fr-FR')}</div>
+              <div className="text-gray-500">abonnés</div>
+            </div>
+            <div>
+              <div className="font-bold text-2xl text-blue-600">{Number(ytStats.views).toLocaleString('fr-FR')}</div>
+              <div className="text-gray-500">vues</div>
+            </div>
+            <div>
+              <div className="font-bold text-2xl text-green-600">{Number(ytStats.videos).toLocaleString('fr-FR')}</div>
+              <div className="text-gray-500">vidéos</div>
+            </div>
+          </div>
+        ) : null}
+      </div>
 
       <VIPSection />
 
@@ -234,7 +353,6 @@ export default function Home() {
               Rejoins l'aventure !
             </DialogTitle>
           </DialogHeader>
-          
           <form onSubmit={handleLogin} className="space-y-4 p-6">
             <div>
               <Label htmlFor="username">Ton nom de gamer</Label>
@@ -248,7 +366,6 @@ export default function Home() {
                 required
               />
             </div>
-            
             <div className="bg-blue-50 p-4 rounded-lg">
               <p className="text-sm text-blue-800 mb-2">
                 🎮 En te connectant, tu pourras :
@@ -260,13 +377,21 @@ export default function Home() {
                 <li>• Participer aux tirages au sort</li>
               </ul>
             </div>
-            
             <Button
               type="submit"
               className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3"
             >
               Commencer l'aventure ! 🚀
             </Button>
+            <div className="flex flex-col items-center mt-4">
+              <span className="mb-2 text-gray-500 text-xs">Ou connecte-toi avec Google&nbsp;:</span>
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => {
+                  console.log('Échec de la connexion Google');
+                }}
+              />
+            </div>
           </form>
         </DialogContent>
       </Dialog>

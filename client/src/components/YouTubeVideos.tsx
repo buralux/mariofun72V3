@@ -25,6 +25,9 @@ export default function YouTubeVideos() {
   };
 
   if (error) {
+    // Gestion spécifique de l'erreur 503 (API YouTube indisponible)
+    // On vérifie le message d'erreur retourné par React Query/fetch
+    const is503 = error?.message && (error.message.includes('503') || error.message.toLowerCase().includes('api youtube non configurée'));
     return (
       <section className="py-16 bg-white">
         <div className="container mx-auto px-4">
@@ -36,7 +39,9 @@ export default function YouTubeVideos() {
             <Card className="max-w-md mx-auto">
               <CardContent className="p-6">
                 <p className="text-gray-600 mb-4">
-                  Impossible de charger les vidéos pour le moment.
+                  {is503
+                    ? "L'API YouTube est temporairement indisponible. Réessaie dans quelques minutes !"
+                    : "Impossible de charger les vidéos pour le moment."}
                 </p>
                 <Button
                   asChild
