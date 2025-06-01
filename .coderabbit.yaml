@@ -1,0 +1,43 @@
+reviews:
+  # Configuration pour les reviews automatiques
+  auto_review:
+    enabled: true
+    drafts: false
+  
+  # Ignorer certains types d'alertes
+  ignore:
+    - "WebSocket closed prematurely"
+    - "websocket"
+    - "ws connection"
+  
+  # Fichiers à ignorer
+  exclude:
+    - "node_modules/**"
+    - "dist/**"
+    - "build/**"
+    - "*.log"
+    - ".env*"
+    - "attached_assets/**"
+
+# Configuration pour les langages
+language:
+  typescript:
+    enabled: true
+  javascript:
+    enabled: true
+  react:
+    enabled: true
+
+# Règles spécifiques
+rules:
+  # Ignorer les alertes WebSocket pour ce projet
+  websocket_warnings:
+    enabled: false
+  
+  # Activer les vérifications importantes
+  security:
+    enabled: true
+  performance:
+    enabled: true
+  best_practices:
+    enabled: true

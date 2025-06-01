@@ -149,6 +149,12 @@ Les contributions sont les bienvenues ! N'hésitez pas à ouvrir une issue ou so
 
 Ce projet est sous licence MIT. Voir le fichier [LICENSE](LICENSE) pour plus de détails.
 
-## 👨‍💻 Auteur
+## � Notes techniques
+
+### CodeRabbit
+Ce projet utilise des fonctions serverless Vercel et n'implémente pas de WebSockets. 
+Les alertes WebSocket de CodeRabbit peuvent être ignorées en toute sécurité.
+
+## �👨‍💻 Auteur
 
 **Buralux** - [GitHub](https://github.com/buralux)

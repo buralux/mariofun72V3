@@ -17,3 +17,8 @@ vite.config.ts.*
 # Build outputs
 client/dist
 build
+
+# Code analysis tools
+.coderabbit/
+*.analysis
+.eslintcache
