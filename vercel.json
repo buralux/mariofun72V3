@@ -3,16 +3,10 @@
   "buildCommand": "npm run build:client",
   "outputDirectory": "client/dist",
   "installCommand": "npm install",
-  "framework": "vite",
-  "functions": {
-    "server/index.ts": {
-      "runtime": "@vercel/node@3.0.0"
-    }
-  },
   "routes": [
     {
       "src": "/api/(.*)",
-      "dest": "/server/index.ts"
+      "dest": "/api/index.ts"
     },
     {
       "handle": "filesystem"
