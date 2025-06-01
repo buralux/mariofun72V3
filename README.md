@@ -69,7 +69,41 @@ npm run db:push
 
 ## 🚀 Déploiement
 
-L'application peut être déployée sur diverses plateformes :
+### Déploiement sur Vercel
+
+1. **Connectez votre repository GitHub à Vercel** :
+   - Allez sur [vercel.com](https://vercel.com)
+   - Importez votre repository GitHub
+   - Vercel détectera automatiquement la configuration
+
+2. **Variables d'environnement** :
+   Configurez les variables suivantes dans Vercel :
+   ```
+   DATABASE_URL=your_neon_database_url
+   SESSION_SECRET=your_session_secret
+   GOOGLE_CLIENT_ID=your_google_client_id (optionnel)
+   GOOGLE_CLIENT_SECRET=your_google_client_secret (optionnel)
+   ```
+
+3. **Déploiement automatique** :
+   - Chaque push sur la branche `main` déclenchera un déploiement automatique
+   - Vercel utilisera le script `vercel-build` défini dans package.json
+
+### Configuration post-déploiement
+
+1. **Base de données** :
+   - Configurez votre base de données Neon
+   - Exécutez `npm run db:push` pour initialiser le schéma
+
+2. **Domaine personnalisé** (optionnel) :
+   - Configurez votre domaine dans les paramètres Vercel
+   - Mettez à jour les URLs de callback OAuth si nécessaire
+
+3. **Monitoring** :
+   - Activez les analytics Vercel
+   - Configurez les alertes de performance
+
+### Déploiement local
 
 1. **Build de production** :
 ```bash
