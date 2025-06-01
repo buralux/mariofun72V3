@@ -66,6 +66,32 @@ npm run db:push
 - Animations fluides et interactives
 - Architecture full-stack TypeScript
 - Base de données relationnelle avec Drizzle ORM
+- API Serverless optimisée pour Vercel
+
+## 🔗 API Endpoints
+
+### Authentification
+- `POST /api/auth/login` - Connexion utilisateur
+
+### Utilisateurs
+- `GET /api/user/[id]` - Récupérer un utilisateur
+- `PUT /api/user/[id]` - Mettre à jour un utilisateur
+
+### YouTube
+- `GET /api/youtube/videos` - Récupérer les dernières vidéos
+- `GET /api/youtube/stats` - Statistiques de la chaîne
+
+### Jeux
+- `POST /api/games/score` - Enregistrer un score
+
+### VIP
+- `POST /api/vip/mystery-chest` - Ouvrir un coffre mystère
+
+### Système d'humeur
+- `POST /api/mood/update` - Mettre à jour l'humeur
+
+### Test
+- `GET /api/hello` - Test de l'API
 
 ## 🚀 Déploiement
 
